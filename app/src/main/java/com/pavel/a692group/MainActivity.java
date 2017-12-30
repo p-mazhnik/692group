@@ -6,19 +6,26 @@ import android.database.sqlite.SQLiteDatabase;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.format.Time;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
 import com.pavel.a692group.request.http.HttpGetRequestTask;
 
-import java.util.ArrayList;
+/**
+ * Created by p.mazhnik on 17.11.2017.
+ * to 692group
+ */
 
 public class MainActivity extends AppCompatActivity {
     private Button loginButton;
     private Button new_year_button;
+    private static boolean isLogin = false;
 
     DBHelper databaseHelper;
+    private final Time time_start = new Time(Time.getCurrentTimezone());
+    private Time time_current = new Time(Time.getCurrentTimezone());
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,35 +54,43 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View view) {
                 SQLiteDatabase db = databaseHelper.open();
                 Cursor cursor = db.rawQuery("select * from " + DBHelper.TABLE, null);
-                //SQL_request(cursor, getApplicationContext().getString(R.string.new_year_1));
-                SQL_request(cursor, getApplicationContext().getString(R.string.new_year_2));
+                //new_year_SQL_request(cursor, getApplicationContext().getString(R.string.new_year_1));
+                new_year_SQL_request(cursor, getApplicationContext().getString(R.string.new_year_2));
                 cursor.close();
                 db.close();
             }
         });
+
+        //time_current.setToNow();
+        /*String str = "" + (time_current.second - time_start.second);
+        Toast.makeText(this, str, Toast.LENGTH_SHORT).show();*/
+        if(!isLogin /*|| (time_current.minute - time_start.minute >= 5)*/) startLoginActivity();
     }
 
-    private void SQL_request(Cursor cursor, String str){
-        ArrayList<Integer> _ids = new ArrayList<>();
+    private void new_year_SQL_request(Cursor cursor, String str){
+        //ArrayList<Integer> _ids = new ArrayList<>();
         if (cursor.moveToFirst()) {
             //System.out.println("ONE ROW");
             int idIndex = cursor.getColumnIndex(DBHelper.COLUMN_ID);
+            int nameIndex = cursor.getColumnIndex(DBHelper.COLUMN_NAME);
+            int secondNameIndex = cursor.getColumnIndex(DBHelper.COLUMN_SECOND_NAME);
                         /*System.out.println(idIndex);
                         System.out.println(cursor.getInt(idIndex));*/
             do{
                 //System.out.println(cursor.getInt(idIndex));
-                _ids.add(cursor.getInt(idIndex));
+                String URL = new VkAPI.Messages.send(this)
+                        .user_id(cursor.getInt(idIndex)) //id_vk
+                        .message(cursor.getString(nameIndex) + " " + cursor.getString(secondNameIndex) + "!\n" + str)
+                        .build();
+                HttpGetRequestTask request = new HttpGetRequestTask(URL, null);
+                request.execute(); //выолнение запроса в отдельном потоке
+                //_ids.add(cursor.getInt(idIndex));
             } while (cursor.moveToNext());
         } else{
             //System.out.println("NON ROW");
             Toast.makeText(this, this.getString(R.string.empty_db), Toast.LENGTH_SHORT).show();
         }
-        String URL = new VkAPI.Messages.send(this)
-                .user_ids(_ids) //id_vk
-                .message(str)
-                .build();
-        HttpGetRequestTask request = new HttpGetRequestTask(URL, null);
-        request.execute(); //выолнение запроса в отдельном потоке
+
     }
 
     @Override
@@ -105,5 +120,24 @@ public class MainActivity extends AppCompatActivity {
 
     private void startInfoActivity() {
         startActivity(new Intent(this, InfoActivity.class));
+    }
+
+    private void startLoginActivity() {
+        Intent intent = new Intent(this, LoginActivity.class);
+        //intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        startActivityForResult(intent, 0);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) { //получаем результат от активити
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == 0) {
+            if (resultCode == RESULT_OK) {
+                isLogin = true;
+                time_start.setToNow();
+            }else {
+                finish();
+            }
+        }
     }
 }

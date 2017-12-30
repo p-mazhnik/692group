@@ -7,7 +7,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 /**
- * Created by pavel on 29.12.2017.
+ * Created by p.mazhnik on 29.12.2017.
+ * to 692group
  */
 
 public class RequestUrlCreator {

@@ -7,7 +7,8 @@ import com.pavel.a692group.request.http.RequestUrlCreator;
 import java.util.ArrayList;
 
 /**
- * Created by pavel on 29.12.2017.
+ * Created by p.mazhnik on 29.12.2017.
+ * to 692group
  */
 
 class VkAPI {

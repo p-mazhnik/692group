@@ -8,7 +8,8 @@ import okhttp3.Request;
 import okhttp3.Response;
 
 /**
- * Created by pavel on 17.11.2017.
+ * Created by p.mazhnik on 17.11.2017.
+ * to 692group
  */
 
 public class HttpGetRequestTask extends AsyncTask<Void, Void, String> {

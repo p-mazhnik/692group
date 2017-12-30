@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="com.pavel.a692group">
     <uses-permission android:name="android.permission.INTERNET"/>
     <application
@@ -9,14 +10,29 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".MainActivity">
+        <activity android:name=".MainActivity"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".InfoActivity"></activity>
+        <activity android:name=".InfoActivity"
+            android:parentActivityName=".MainActivity"
+            tools:targetApi="jelly_bean"
+            android:screenOrientation="portrait">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.pavel.a692group.MainActivity" />
+        </activity>
+        <activity
+            android:name=".LoginActivity"
+            android:label="@string/title_activity_login"
+            android:theme="@style/Theme.AppCompat.Translucent"
+            android:screenOrientation="portrait"
+            >
+        </activity>
     </application>
 
 </manifest>

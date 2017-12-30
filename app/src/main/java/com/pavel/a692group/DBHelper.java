@@ -12,6 +12,11 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 
+/**
+ * Created by p.mazhnik on 30.12.2017.
+ * to 692group
+ */
+
 class DBHelper extends SQLiteOpenHelper {
     private static String DB_PATH = null; // полный путь к базе данных
     private static String DB_NAME = "692group.db";
@@ -75,3 +80,7 @@ class DBHelper extends SQLiteOpenHelper {
         return SQLiteDatabase.openDatabase(DB_PATH, null, SQLiteDatabase.OPEN_READWRITE);
     }
 }
+/*
+Cursor cursor = db.rawQuery("select * from " + DBHelper.TABLE + " where " + DBHelper.COLUMN_GROUP
+                        + "=? OR " + DBHelper.COLUMN_GROUP + "=?", new String[]{"admin", "step"});
+ */

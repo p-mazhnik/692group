@@ -7,5 +7,19 @@
     <string name="empty_db">empty data base</string>
     <string name="new_year_button">Поздравить с новым годом любимых одногруппников</string>
     <string name="new_year_1">С Наступающим!</string>
-    <string name="new_year_2">Привет! \nПоздравляю тебя с наступающим Новым годом! \nВ Новом году хочу пожелать больше приятных моментов, отличного настроения и, главное, счастья!\nC любовью, \n[p.mazhnik|cтароста♡]</string>
+    <string name="new_year_2">Поздравляю Вас с наступающим Новым годом!🌲 \nВ Новом году хочу пожелать больше приятных моментов, отличного настроения и, главное, счастья!\nC любовью, \n[p.mazhnik|Староста♡]</string>
+    <string name="title_activity_login">Login</string>
+
+    <!-- Strings related to login -->
+    <string name="prompt_email">Login</string>
+    <string name="prompt_password">Password</string>
+    <string name="action_sign_in">Sign in</string>
+    <string name="action_sign_in_short">Sign in</string>
+    <string name="error_invalid_email">This login is invalid</string>
+    <string name="error_invalid_password">This password is too short</string>
+    <string name="error_incorrect_password">This password is incorrect</string>
+    <string name="error_field_required">This field is required</string>
+    <string name="permission_rationale">"Contacts permissions are needed for providing email
+        completions."
+    </string>
 </resources>

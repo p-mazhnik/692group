@@ -20,6 +20,11 @@ import com.pavel.a692group.request.http.HttpGetRequestTask;
 import java.util.ArrayList;
 import java.util.Objects;
 
+/**
+ * Created by p.mazhnik on 17.11.2017.
+ * to 692group
+ */
+
 public class InfoActivity extends AppCompatActivity {
     final Context context = this;
 
