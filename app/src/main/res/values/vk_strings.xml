@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="vk_url_base">https://api.vk.com/method/</string>
+    <string name="api_vk_version">5.69</string>
+    <string name="com_vk_sdk_AppId">6262627</string>
+</resources>

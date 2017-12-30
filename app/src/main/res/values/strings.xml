@@ -1,0 +1,11 @@
+<resources>
+    <string name="app_name">692group</string>
+    <string name="login_button">Start</string>
+    <string name="info_send_button">Send</string>
+    <string name="hello_text">C любовью, \n[p.mazhnik|Староста♡]</string>
+    <string name="empty_text">empty text</string>
+    <string name="empty_db">empty data base</string>
+    <string name="new_year_button">Поздравить с новым годом любимых одногруппников</string>
+    <string name="new_year_1">С Наступающим!</string>
+    <string name="new_year_2">Привет! \nПоздравляю тебя с наступающим Новым годом! \nВ Новом году хочу пожелать больше приятных моментов, отличного настроения и, главное, счастья!\nC любовью, \n[p.mazhnik|cтароста♡]</string>
+</resources>

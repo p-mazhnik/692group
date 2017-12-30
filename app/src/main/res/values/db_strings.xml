@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="db_name">692group.db</string>
+    <string name="db_schema">1</string>
+    <string name="db_table_all">All_users</string>
+    <string name="db_column_id">_id</string>
+    <string name="db_column_link">_link</string>
+    <string name="db_column_surname">surname</string>
+    <string name="db_column_name">name</string>
+    <string name="db_column_second_name">second_name</string>
+    <string name="db_column_group">_group</string>
+</resources>

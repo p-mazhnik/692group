@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#FF9800</color>
+    <color name="colorPrimaryDark">#11558d</color>
+    <color name="colorAccent">#11558d</color>
+    <color name="new_year">#ffffff</color>
+    <color name="dark_new_year">#373d38</color>
+</resources>
