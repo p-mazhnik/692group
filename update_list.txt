@@ -1,0 +1,8 @@
+[1.0.0 base]
+add base application: MainActivity, InfoActivity with VkApi and SQL Data base
+
+[1.0.1 new_year]
+update design and functionality of MainActivity for new_year
+
+[1.0.2 new_year]
+add LoginActivity
