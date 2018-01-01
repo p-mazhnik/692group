@@ -29,6 +29,7 @@ class DBHelper extends SQLiteOpenHelper {
     static final String COLUMN_NAME = "name";
     static final String COLUMN_SECOND_NAME = "second_name";
     static final String COLUMN_GROUP = "_group";
+    static final String[] COLUMNS = new String[]{COLUMN_ID, COLUMN_LINK, COLUMN_SURNAME, COLUMN_NAME, COLUMN_SECOND_NAME, COLUMN_GROUP};
     private Context myContext;
 
     DBHelper(Context context) {
@@ -40,8 +41,10 @@ class DBHelper extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
     }
+
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion,  int newVersion) {
+        //TODO
     }
 
     void create_db(){

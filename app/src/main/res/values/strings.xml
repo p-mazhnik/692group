@@ -1,16 +1,22 @@
 <resources>
     <string name="app_name">692group</string>
     <string name="login_button">Start</string>
+    <string name="empty_db">empty data base</string>
+
+    <!-- Strings related to InfoActivity [base] -->
     <string name="info_send_button">Send</string>
     <string name="hello_text">C любовью, \n[p.mazhnik|Староста♡]</string>
     <string name="empty_text">empty text</string>
-    <string name="empty_db">empty data base</string>
+    <string name="info_edit_button">Edit Data Base</string> <!--[v.1.1.0]-->
+
+    <!-- Strings for New Year 18 [v.1.0.1 new_year] -->
     <string name="new_year_button">Поздравить с новым годом любимых одногруппников</string>
     <string name="new_year_1">С Наступающим!</string>
-    <string name="new_year_2">Поздравляю Вас с наступающим Новым годом!🌲 \nВ Новом году хочу пожелать больше приятных моментов, отличного настроения и, главное, счастья!\nC любовью, \n[p.mazhnik|Староста♡]</string>
-    <string name="title_activity_login">Login</string>
+    <string name="new_year_2">Поздравляю Вас с наступающим Новым годом!🌲 \nВ Новом году хочу
+        пожелать больше приятных моментов, отличного настроения и, главное, счастья!\nC любовью, \n[p.mazhnik|Староста♡]</string>
 
-    <!-- Strings related to login -->
+    <!-- Strings related to LoginActivity [v.1.0.2] -->
+    <string name="title_activity_login">Login</string>
     <string name="prompt_email">Login</string>
     <string name="prompt_password">Password</string>
     <string name="action_sign_in">Sign in</string>
@@ -22,4 +28,11 @@
     <string name="permission_rationale">"Contacts permissions are needed for providing email
         completions."
     </string>
+
+    <!-- Strings related to EditDbActivity and EditUserActivity [v.1.1.0] -->
+    <string name="edit_key">KEY</string>
+    <string name="edit_key_old">old</string>
+    <string name="edit_key_new">new</string>
+    <string name="ok_button">OK</string>
+
 </resources>

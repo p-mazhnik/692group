@@ -1,6 +1,7 @@
 package com.pavel.a692group;
 
 import android.content.Context;
+import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.support.constraint.ConstraintLayout;
@@ -30,6 +31,7 @@ public class InfoActivity extends AppCompatActivity {
 
     private ConstraintLayout ConstraintLayout;
     private Button SendButton;
+    private Button EditDbButton;
     private EditText EditText;
 
     ArrayList<String> group_str;
@@ -40,7 +42,6 @@ public class InfoActivity extends AppCompatActivity {
     DBHelper databaseHelper;
     SQLiteDatabase db;
     Cursor cursor;
-    SimpleCursorAdapter userAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,10 +60,10 @@ public class InfoActivity extends AppCompatActivity {
         EditText = findViewById(R.id.editText);
         EditText.setText(context.getString(R.string.hello_text));
 
-        SendButton = findViewById(R.id.send_button);
+        SendButton = findViewById(R.id.send_button); //TODO: обработать ошибку отправки при невыборе списка
         SendButton.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) {
+            public void onClick(View view) { //TODO: добавить вызов окошка с предупреждением об отправке
                 if(EditText.getText() != null && !Objects.equals(EditText.getText().toString().trim(), "")) {
                     // открываем подключение
                     db = databaseHelper.open();
@@ -86,6 +87,14 @@ public class InfoActivity extends AppCompatActivity {
                 } else {
                     Toast.makeText(context, context.getString(R.string.empty_text), Toast.LENGTH_SHORT).show();
                 }
+            }
+        });
+
+        EditDbButton = findViewById(R.id.info_edit_button);
+        EditDbButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startEditDbActivity();
             }
         });
     }
@@ -179,5 +188,9 @@ public class InfoActivity extends AppCompatActivity {
                 }
             }
         });
+    }
+
+    private void startEditDbActivity(){
+        startActivity(new Intent(this, EditDbActivity.class));
     }
 }

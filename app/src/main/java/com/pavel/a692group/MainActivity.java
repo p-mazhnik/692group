@@ -2,7 +2,6 @@ package com.pavel.a692group;
 
 import android.content.Intent;
 import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -20,7 +19,7 @@ import com.pavel.a692group.request.http.HttpGetRequestTask;
 
 public class MainActivity extends AppCompatActivity {
     private Button loginButton;
-    private Button new_year_button;
+    //private Button new_year_button; //[v.1.0.1 new_year]
     private static boolean isLogin = false;
 
     DBHelper databaseHelper;
@@ -48,7 +47,8 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        new_year_button = (Button) findViewById(R.id.new_year_button);
+        //[v.1.0.1 new_year]
+        /*new_year_button = (Button) findViewById(R.id.new_year_button);
         new_year_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -59,15 +59,15 @@ public class MainActivity extends AppCompatActivity {
                 cursor.close();
                 db.close();
             }
-        });
+        });*/
 
         //time_current.setToNow();
         /*String str = "" + (time_current.second - time_start.second);
         Toast.makeText(this, str, Toast.LENGTH_SHORT).show();*/
-        if(!isLogin /*|| (time_current.minute - time_start.minute >= 5)*/) startLoginActivity();
+        //if(!isLogin /*|| (time_current.minute - time_start.minute >= 5)*/) startLoginActivity(); //TODO: включить логинку обратно
     }
 
-    private void new_year_SQL_request(Cursor cursor, String str){
+    private void new_year_SQL_request(Cursor cursor, String str){ //[v.1.0.1 new_year]
         //ArrayList<Integer> _ids = new ArrayList<>();
         if (cursor.moveToFirst()) {
             //System.out.println("ONE ROW");
