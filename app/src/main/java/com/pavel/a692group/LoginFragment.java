@@ -1,14 +1,18 @@
 package com.pavel.a692group;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
+import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
 import android.text.TextUtils;
 import android.view.KeyEvent;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
@@ -22,10 +26,10 @@ import java.util.Objects;
  * to 692group
  */
 
-public class LoginActivity extends AppCompatActivity {
+public class LoginFragment extends Fragment {
 
     private UserLoginTask mAuthTask = null;
-    private Intent answerIntent;
+    private Intent mAnswerIntent;
 
     // UI references.
     private AutoCompleteTextView mLoginView;
@@ -33,13 +37,22 @@ public class LoginActivity extends AppCompatActivity {
     private Button mSignInButton;
     private Button mExitButton;
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_login);
+    public static LoginFragment newInstance() {
 
-        mLoginView = (AutoCompleteTextView) findViewById(R.id.in_login_field);
-        mPasswordView = (EditText) findViewById(R.id.in_password_field);
+        Bundle args = new Bundle();
+
+        LoginFragment fragment = new LoginFragment();
+        fragment.setArguments(args);
+        return fragment;
+    }
+
+    @Nullable
+    @Override
+    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        View v = inflater.inflate(R.layout.activity_login, container, false);
+
+        mLoginView = (AutoCompleteTextView) v.findViewById(R.id.in_login_field);
+        mPasswordView = (EditText) v.findViewById(R.id.in_password_field);
         mPasswordView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView textView, int id, KeyEvent keyEvent) {
@@ -51,7 +64,7 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
 
-        mSignInButton = (Button) findViewById(R.id.sign_in_button);
+        mSignInButton = (Button) v.findViewById(R.id.sign_in_button);
         mSignInButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -59,13 +72,14 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
 
-        mExitButton = (Button) findViewById(R.id.in_exit_button);
+        mExitButton = (Button) v.findViewById(R.id.in_exit_button);
         mExitButton.setOnClickListener(new OnClickListener() {
             @Override
-            public void onClick(View v) {
-                finish();
+            public void onClick(View view) {
+                getActivity().finish();
             }
         });
+        return v;
     }
 
     /**
@@ -114,7 +128,7 @@ public class LoginActivity extends AppCompatActivity {
         } else {
             // Show a progress spinner, and kick off a background task to
             // perform the user login attempt.
-            mAuthTask = new UserLoginTask(this, login, password);
+            mAuthTask = new UserLoginTask(getActivity(), login, password);
             mAuthTask.execute((Void) null);
         }
     }
@@ -157,9 +171,9 @@ public class LoginActivity extends AppCompatActivity {
             mAuthTask = null;
 
             if (success) {
-                setResult(RESULT_OK); //записываем результат для MainActivity
+                getActivity().setResult(Activity.RESULT_OK); //записываем результат для MainActivity
                 //TODO: различать пользователей
-                finish();
+                getActivity().finish();
             } else {
                 mPasswordView.setError(getString(R.string.error_incorrect_password));
                 mPasswordView.requestFocus();

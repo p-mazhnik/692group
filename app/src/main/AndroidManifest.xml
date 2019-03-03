@@ -32,7 +32,7 @@
                 android:value="com.pavel.a692group.MainActivity" />
         </activity>
         <activity
-            android:name=".LoginActivity"
+            android:name=".AuthActivity"
             android:label="@string/title_activity_login"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.AppCompat.Translucent" />
