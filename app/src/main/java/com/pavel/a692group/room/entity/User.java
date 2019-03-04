@@ -61,6 +61,12 @@ public class User implements Serializable {
         mGroup = group;
     }
 
+    public void updateUser(User user){
+        mId = user.getId();
+        mName = user.getName();
+        mGroup = user.getGroup();
+    }
+
     @Ignore
     public static final String TABLE = "users"; // название таблицы в бд
     // названия столбцов

@@ -1,14 +1,15 @@
 package com.pavel.a692group;
 
 import android.content.Context;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.pavel.a692group.room.entity.User;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -21,9 +22,26 @@ public class UserAdapter extends BaseAdapter {
     private Context mContext;
     private List<User> mUsers;
 
-    public UserAdapter(Context context, List<User> uers) {
+    public UserAdapter(Context context) {
         mContext = context;
-        mUsers = uers;
+        mUsers = new ArrayList<>();
+    }
+
+    public UserAdapter(Context context, List<User> users) {
+        mContext = context;
+        mUsers = users;
+    }
+
+    public void setData(List<User> user){
+        mUsers = user;
+    }
+
+    public List<User> getData(){
+        return mUsers;
+    }
+
+    public void updateUserFromPos(int position, User user){
+        mUsers.get(position).updateUser(user);
     }
 
     @Override
@@ -43,25 +61,28 @@ public class UserAdapter extends BaseAdapter {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-
-        LinearLayout fragm;
-
         if (convertView == null) {
-            convertView = new LinearLayout(mContext);
-            fragm = (LinearLayout) convertView;
+            convertView = new View(mContext);
+            LayoutInflater inflater = (LayoutInflater) mContext.getSystemService( Context.LAYOUT_INFLATER_SERVICE );
+            convertView = inflater.inflate(R.layout.user_item, parent, false);
 
-            fragm.setOrientation(LinearLayout.VERTICAL);
-
-            TextView Text1 = new TextView(mContext);
-            TextView Text2 = new TextView(mContext);
-            Text1.setText(mUsers.get(position).getName());
-            Text2.setText(mUsers.get(position).getGroup());
-            fragm.addView(Text1);
-            fragm.addView(Text2);
-        } else {
-            fragm = (LinearLayout) convertView;
+            ViewHolder viewHolder = new ViewHolder();
+            viewHolder.Text_name =
+                    (TextView)convertView.findViewById(R.id.item_user_name);
+            viewHolder.Text_group =
+                    (TextView)convertView.findViewById(R.id.item_user_group);
+            // Store results of findViewById
+            convertView.setTag(viewHolder);
         }
-        //TODO: здесь не сделана замена текста при непустом converView, возможно, это и не нужно.
+        TextView Text_name = ((ViewHolder)convertView.getTag()).Text_name;
+        TextView Text_group = ((ViewHolder)convertView.getTag()).Text_group;
+        Text_name.setText(mUsers.get(position).getName());
+        Text_group.setText(mUsers.get(position).getGroup());
         return (convertView);
+    }
+
+    static class ViewHolder{
+        TextView Text_name;
+        TextView Text_group;
     }
 }

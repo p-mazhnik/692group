@@ -2,9 +2,6 @@ package com.pavel.a692group;
 
 import android.content.Context;
 import android.content.Intent;
-import android.os.Handler;
-import android.os.Looper;
-import android.os.Message;
 import android.support.constraint.ConstraintLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
@@ -25,6 +22,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Consumer;
 
@@ -40,8 +38,6 @@ public class InfoActivity extends AppCompatActivity {
     private Button SendButton;
     private Button EditDbButton;
     private EditText EditText;
-
-    private Handler mHandler;
 
     private AppDatabase mDatabase;
     private Disposable mDisposable;
@@ -68,13 +64,13 @@ public class InfoActivity extends AppCompatActivity {
         mDisposable = mDatabase
                 .getUserDao()
                 .getAllGroup()
-                //.observeOn(AndroidSchedulers.mainThread()) //TODO: Чтобы результат пришел в UI поток, используем observeOn. Избавиться от messages ?
+                .observeOn(AndroidSchedulers.mainThread()) //Чтобы результат пришел в UI поток, используем observeOn.
                 .subscribe(new Consumer<List<String>>() {
                     @Override
                     public void accept(List<String> groaps) throws Exception {
                         // Log.d("Inf", "size: " + groaps.get(0).mGroup);
-                        Message message = mHandler.obtainMessage(3, groaps); //Отправляем данные в UI поток
-                        message.sendToTarget();
+                        group_str.addAll(groaps); ///TODO: исправить проблему с необновленим списка групп после изменений в других активити
+                        CheckBoxCreate(); //cоздаем чекбоксы на основе списка групп
                     }
                 }, new Consumer<Throwable>() {
                     @Override
@@ -82,17 +78,6 @@ public class InfoActivity extends AppCompatActivity {
                         Log.e("Inf", "accept: ", throwable);
                     }
                 });
-        //TODO: добавить возможность редактирования бд
-
-        mHandler = new Handler(Looper.getMainLooper()) {
-            @Override
-            public void handleMessage(Message message) {
-                if(message.what == 3) {
-                    group_str.addAll((List<String>) message.obj);
-                    CheckBoxCreate(); //cоздаем чекбоксы на основе списка групп
-                }
-            }
-        };
 
         EditText = findViewById(R.id.editText);
         EditText.setText(context.getString(R.string.hello_text));
@@ -135,6 +120,11 @@ public class InfoActivity extends AppCompatActivity {
         HttpGetRequestTask request = new HttpGetRequestTask(URL, null);
         request.execute(); //выолнение запроса в отдельном потоке
     }*/
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+    }
 
     @Override
     protected void onStop() {

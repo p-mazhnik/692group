@@ -18,6 +18,7 @@ import com.pavel.a692group.room.entity.User;
 
 import java.util.List;
 
+import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Consumer;
 
@@ -28,6 +29,7 @@ import io.reactivex.functions.Consumer;
 
 public class EditUserActivity extends AppCompatActivity {
     public static String ID_KEY = "ID_KEY";
+    public static String POS_KEY = "POS_KEY";
 
     private long mUserId;
     private User mUser;
@@ -37,6 +39,7 @@ public class EditUserActivity extends AppCompatActivity {
     private Button mOkButton;
 
     private Handler mHandler;
+    private Intent mIntentAnswer;
 
     private AppDatabase mDatabase;
     private Disposable mDisposable;
@@ -61,15 +64,6 @@ public class EditUserActivity extends AppCompatActivity {
 
         getUserFromDb();
 
-        mHandler = new Handler(Looper.getMainLooper()) {
-            @Override
-            public void handleMessage(Message message) {
-                // This is where you do your work in the UI thread.
-                // Your worker tells you in the message what to do.
-                if(message.what == 2) setEditText((List<User>) message.obj);
-            }
-        };
-
         mOkButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -84,6 +78,7 @@ public class EditUserActivity extends AppCompatActivity {
         mDisposable = mDatabase
                 .getUserDao()
                 .getById(mUserId)
+                .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Consumer<List<User>>() {
                     @Override
                     public void accept(List<User> users) throws Exception {
@@ -93,8 +88,7 @@ public class EditUserActivity extends AppCompatActivity {
                         Если записи нет, то сразу после подписки ничего не придет. А вот если она позже появится, то она придет в accept.
                         В данном случае запись придет всегда, но лист может быть пустым.
                          */
-                        Message message = mHandler.obtainMessage(2, users); //Отправляем данные в UI поток
-                        message.sendToTarget();
+                        setEditText(users);
                     }
                 }, new Consumer<Throwable>() {
                     @Override
@@ -108,7 +102,6 @@ public class EditUserActivity extends AppCompatActivity {
         int size = users.size();
         if(size == 0){
             if(isNewUser()) { //размер 0, если id = 0
-                //TODO: новый пользователь
                 mUser = new User();
             } else { //если такой id не нашелся в бд (что странно, т.к. мы выбираем из существующих)
                 wrongFinish();
@@ -125,7 +118,6 @@ public class EditUserActivity extends AppCompatActivity {
     }
 
     private void UpdateDataBase(){
-        //TODO
         mUser.setName(mNameTextEdit.getText().toString());
         if (isNewUser()) {
             try {

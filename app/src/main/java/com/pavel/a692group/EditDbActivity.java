@@ -1,11 +1,6 @@
 package com.pavel.a692group;
 
 import android.content.Intent;
-import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
-import android.os.Handler;
-import android.os.Looper;
-import android.os.Message;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
@@ -13,15 +8,16 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.GridView;
-import android.widget.SimpleCursorAdapter;
 import android.widget.Toast;
 
 import com.pavel.a692group.room.AppDatabase;
 import com.pavel.a692group.room.entity.User;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
@@ -35,8 +31,10 @@ import io.reactivex.functions.Consumer;
 public class EditDbActivity extends AppCompatActivity {
     private GridView mGridView;
     private FloatingActionButton mNewButton;
+    private Button mButton;
 
-    private Handler mHandler;
+    private UserAdapter mUserAdapter;
+    private Intent mIntent;
 
     private AppDatabase mDatabase;
     private Disposable mDisposable;
@@ -51,19 +49,60 @@ public class EditDbActivity extends AppCompatActivity {
         actionBar.setDisplayShowHomeEnabled(true);
 
         mGridView = (GridView) findViewById(R.id.edit_db_grid_view);
+        mGridView.setColumnWidth(60);
+        mGridView.setVerticalSpacing(20);
+        mGridView.setHorizontalSpacing(20);
         mNewButton = (FloatingActionButton) findViewById(R.id.edit_db_floatingActionButton);
+        mButton = findViewById(R.id.edit_db_button);
 
         mDatabase = AppDatabase.createPersistentDatabase(this);
 
+        /*
+        Для того, чтобы мы могли заполнить наш GridView созданым объектом, надо задать адаптер.
+        */
+        mUserAdapter = new UserAdapter(this);
+        mGridView.setAdapter(mUserAdapter);
+
+        readFromDb();
+
+        mButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mUserAdapter.notifyDataSetChanged();
+            }
+        });
+
+        mGridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
+                startEditUserActivity(id, position);
+            }
+        });
+
+        mNewButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startEditUserActivity(0, -1);
+            }
+        });
+    }
+
+    private void readFromDb(){
         mDisposable = mDatabase
                 .getUserDao()
                 .getAll()
+                .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Consumer<List<User>>() {
                     @Override
-                    public void accept(List<User> users) throws Exception {
-                        Message message = mHandler.obtainMessage(1, users); //Отправляем данные в UI поток
-                        message.sendToTarget();
-                        //Toast.makeText(EditDbActivity.this, "sendMessage", Toast.LENGTH_LONG).show();
+                    public void accept(List<User> users) throws Exception { //Это UI поток, т.к. использовали observeOn
+                        if(users.size() == 0) {
+                            Toast.makeText(EditDbActivity.this, R.string.nonexistent_user_id, Toast.LENGTH_LONG).show();
+                            finish();
+                        }
+                        mUserAdapter.setData(users);
+                        mUserAdapter.notifyDataSetChanged();
+                        // Toast.makeText(EditDbActivity.this, "readFromDb", Toast.LENGTH_LONG).show();
+                        Log.d("Inf", "message");
                     }
                 }, new Consumer<Throwable>() {
                     @Override
@@ -71,53 +110,20 @@ public class EditDbActivity extends AppCompatActivity {
                         Log.e("Inf", "accept: ", throwable);
                     }
                 });
-
-        mHandler = new Handler(Looper.getMainLooper()) {
-            @Override
-            public void handleMessage(Message message) {
-                if(message.what == 1) {
-                    setGridView((List<User>) message.obj);
-                    //Toast.makeText(EditDbActivity.this, "message", Toast.LENGTH_LONG).show();
-                }
-            }
-        };
-
-        mNewButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                startEditUserActivity(0);
-            }
-        });
     }
 
-    private void setGridView(List<User> users) {
-        if(users.size() == 0) {
-            Toast.makeText(this, R.string.nonexistent_user_id, Toast.LENGTH_LONG).show();
-            finish();
-        }
-        /*
-        Для того, чтобы мы могли заполнить наш GridView созданым объектом, надо задать адаптер.
-        */
-        mGridView.setAdapter(new UserAdapter(this, users));
-        mGridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
-                startEditUserActivity(id);
-            }
-        });
-    }
-
-    private void startEditUserActivity(long id){
-        Intent i = new Intent(EditDbActivity.this, EditUserActivity.class);
-        i.putExtra(EditUserActivity.ID_KEY, id); //здесь id это реальный id из бд
-        startActivityForResult(i, 1);
+    private void startEditUserActivity(long id, int position){
+        mIntent = new Intent(EditDbActivity.this, EditUserActivity.class);
+        mIntent.putExtra(EditUserActivity.ID_KEY, id); //здесь id это реальный id из бд
+        mIntent.putExtra(EditUserActivity.POS_KEY, position);
+        startActivityForResult(mIntent, 1);
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == 1 && resultCode == RESULT_OK) {
-            //TODO: обновить видимые значения в GridView
+            readFromDb();
         }
     }
 

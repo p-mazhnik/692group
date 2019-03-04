@@ -10,15 +10,14 @@
         android:id="@+id/edit_db_grid_view"
         android:layout_width="300dp"
         android:layout_height="343dp"
-        android:layout_marginBottom="8dp"
         android:layout_marginStart="44dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="48dp"
+        android:layout_marginEnd="8dp"
         android:numColumns="2"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.186"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.328"
-        android:layout_marginLeft="44dp" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/edit_db_floatingActionButton"
@@ -31,4 +30,17 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:srcCompat="@android:drawable/ic_menu_add"
         android:layout_marginRight="16dp" />
+
+    <Button
+        android:id="@+id/edit_db_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="44dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="8dp"
+        android:text="Button"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/edit_db_grid_view"
+        app:layout_constraintVertical_bias="0.481" />
 </android.support.constraint.ConstraintLayout>

@@ -1,7 +1,6 @@
 package com.pavel.a692group;
 
 import android.content.Intent;
-import android.database.Cursor;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -11,7 +10,6 @@ import android.widget.Button;
 import android.widget.Toast;
 
 import com.pavel.a692group.request.http.HttpGetRequestTask;
-import com.pavel.a692group.room.AppDatabase;
 
 /**
  * Created by p.mazhnik on 17.11.2017.
