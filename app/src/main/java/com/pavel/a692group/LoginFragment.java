@@ -4,14 +4,15 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
-
-import android.os.Build;
 import android.os.Bundle;
-import android.support.annotation.RequiresApi;
+import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
 import android.text.TextUtils;
 import android.view.KeyEvent;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
@@ -25,23 +26,33 @@ import java.util.Objects;
  * to 692group
  */
 
-public class LoginActivity extends Activity {
+public class LoginFragment extends Fragment {
 
     private UserLoginTask mAuthTask = null;
-    private Intent answerIntent;
+    private Intent mAnswerIntent;
 
     // UI references.
-    private AutoCompleteTextView mEmailView;
+    private AutoCompleteTextView mLoginView;
     private EditText mPasswordView;
-    private View mLoginFormView;
+    private Button mSignInButton;
+    private Button mExitButton;
 
+    public static LoginFragment newInstance() {
+
+        Bundle args = new Bundle();
+
+        LoginFragment fragment = new LoginFragment();
+        fragment.setArguments(args);
+        return fragment;
+    }
+
+    @Nullable
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_login);
+    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        View v = inflater.inflate(R.layout.activity_login, container, false);
 
-        mEmailView = (AutoCompleteTextView) findViewById(R.id.email);
-        mPasswordView = (EditText) findViewById(R.id.password);
+        mLoginView = (AutoCompleteTextView) v.findViewById(R.id.in_login_field);
+        mPasswordView = (EditText) v.findViewById(R.id.in_password_field);
         mPasswordView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView textView, int id, KeyEvent keyEvent) {
@@ -53,15 +64,22 @@ public class LoginActivity extends Activity {
             }
         });
 
-        Button mEmailSignInButton = (Button) findViewById(R.id.email_sign_in_button);
-        mEmailSignInButton.setOnClickListener(new OnClickListener() {
+        mSignInButton = (Button) v.findViewById(R.id.sign_in_button);
+        mSignInButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
                 attemptLogin();
             }
         });
 
-        mLoginFormView = findViewById(R.id.login_form);
+        mExitButton = (Button) v.findViewById(R.id.in_exit_button);
+        mExitButton.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                getActivity().finish();
+            }
+        });
+        return v;
     }
 
     /**
@@ -75,31 +93,31 @@ public class LoginActivity extends Activity {
         }
 
         // Reset errors.
-        mEmailView.setError(null);
+        mLoginView.setError(null);
         mPasswordView.setError(null);
 
         // Store values at the time of the login attempt.
-        String email = mEmailView.getText().toString();
+        String login = mLoginView.getText().toString();
         String password = mPasswordView.getText().toString();
 
         boolean cancel = false;
         View focusView = null;
 
         // Check for a valid password, if the user entered one.
-        if (!TextUtils.isEmpty(password) && !isPasswordValid(password)) {
+        if (!isPasswordValid(password)) {
             mPasswordView.setError(getString(R.string.error_invalid_password));
             focusView = mPasswordView;
             cancel = true;
         }
 
-        // Check for a valid email address.
-        if (TextUtils.isEmpty(email)) {
-            mEmailView.setError(getString(R.string.error_field_required));
-            focusView = mEmailView;
+        // Check for a valid login.
+        if (TextUtils.isEmpty(login)) {
+            mLoginView.setError(getString(R.string.error_field_required));
+            focusView = mLoginView;
             cancel = true;
-        } else if (!isLoginValid(email)) {
-            mEmailView.setError(getString(R.string.error_invalid_email));
-            focusView = mEmailView;
+        } else if (!isLoginValid(login)) {
+            mLoginView.setError(getString(R.string.error_invalid_email));
+            focusView = mLoginView;
             cancel = true;
         }
 
@@ -110,19 +128,18 @@ public class LoginActivity extends Activity {
         } else {
             // Show a progress spinner, and kick off a background task to
             // perform the user login attempt.
-            mAuthTask = new UserLoginTask(this, email, password);
+            mAuthTask = new UserLoginTask(getActivity(), login, password);
             mAuthTask.execute((Void) null);
         }
     }
 
-    private boolean isLoginValid(String email) {
-        //TODO: Replace this
+    private boolean isLoginValid(String login) {
+        //TODO: добавить условие для проверки логина ?
         return true;
     }
 
     private boolean isPasswordValid(String password) {
-        //TODO: Replace this
-        return password.length() > 3;
+        return !TextUtils.isEmpty(password) && password.length() > 3; //TODO: можно сделать другое условие
     }
 
     /**
@@ -131,12 +148,12 @@ public class LoginActivity extends Activity {
      */
     public class UserLoginTask extends AsyncTask<Void, Void, Boolean> {
 
-        private final String mEmail;
+        private final String mLogin;
         private final String mPassword;
         private Context mContext;
 
-        UserLoginTask(Context context, String email, String password) {
-            mEmail = email;
+        UserLoginTask(Context context, String login, String password) {
+            mLogin = login;
             mPassword = password;
             mContext = context;
         }
@@ -144,7 +161,8 @@ public class LoginActivity extends Activity {
         @Override
         protected Boolean doInBackground(Void... params) {
             // Account exists, return true if the password matches.
-            return Objects.equals(mEmail, mContext.getString(R.string.app_login))
+            //TODO: хранить пароли не в строковых ресурсах :)
+            return Objects.equals(mLogin, mContext.getString(R.string.app_login))
                     && (Objects.equals(mPassword, mContext.getString(R.string.app_password)));
         }
 
@@ -153,8 +171,9 @@ public class LoginActivity extends Activity {
             mAuthTask = null;
 
             if (success) {
-                setResult(Activity.RESULT_OK);
-                finish();
+                getActivity().setResult(Activity.RESULT_OK); //записываем результат для MainActivity
+                //TODO: различать пользователей
+                getActivity().finish();
             } else {
                 mPasswordView.setError(getString(R.string.error_incorrect_password));
                 mPasswordView.requestFocus();

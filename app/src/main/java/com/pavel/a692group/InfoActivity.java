@@ -1,24 +1,30 @@
 package com.pavel.a692group;
 
 import android.content.Context;
-import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
+import android.content.Intent;
 import android.support.constraint.ConstraintLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
-import android.widget.SimpleCursorAdapter;
 import android.widget.Toast;
 
 import com.pavel.a692group.request.http.HttpGetRequestTask;
+import com.pavel.a692group.room.AppDatabase;
+import com.pavel.a692group.room.entity.User;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
+
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.functions.Consumer;
 
 /**
  * Created by p.mazhnik on 17.11.2017.
@@ -30,17 +36,16 @@ public class InfoActivity extends AppCompatActivity {
 
     private ConstraintLayout ConstraintLayout;
     private Button SendButton;
+    private Button EditDbButton;
     private EditText EditText;
+
+    private AppDatabase mDatabase;
+    private Disposable mDisposable;
 
     ArrayList<String> group_str;
 
     private ArrayList<CheckBox> group_list;
     private CheckBox CheckBox_All;
-
-    DBHelper databaseHelper;
-    SQLiteDatabase db;
-    Cursor cursor;
-    SimpleCursorAdapter userAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,51 +57,54 @@ public class InfoActivity extends AppCompatActivity {
         actionBar.setDisplayUseLogoEnabled(true);
         actionBar.setDisplayShowHomeEnabled(true);
 
-        db_init();
-        CheckBoxCreate();
+        mDatabase = AppDatabase.createPersistentDatabase(this);
 
+        group_str = new ArrayList<>();
+
+        mDisposable = mDatabase
+                .getUserDao()
+                .getAllGroup()
+                .observeOn(AndroidSchedulers.mainThread()) //Чтобы результат пришел в UI поток, используем observeOn.
+                .subscribe(new Consumer<List<String>>() {
+                    @Override
+                    public void accept(List<String> groaps) throws Exception {
+                        // Log.d("Inf", "size: " + groaps.get(0).mGroup);
+                        group_str.addAll(groaps); ///TODO: исправить проблему с необновленим списка групп после изменений в других активити
+                        CheckBoxCreate(); //cоздаем чекбоксы на основе списка групп
+                    }
+                }, new Consumer<Throwable>() {
+                    @Override
+                    public void accept(Throwable throwable) throws Exception {
+                        Log.e("Inf", "accept: ", throwable);
+                    }
+                });
 
         EditText = findViewById(R.id.editText);
         EditText.setText(context.getString(R.string.hello_text));
 
-        SendButton = findViewById(R.id.send_button);
+        SendButton = findViewById(R.id.send_button); //TODO: обработать ошибку отправки при невыборе списка
         SendButton.setOnClickListener(new View.OnClickListener() {
             @Override
+            public void onClick(View view) { //TODO: добавить вызов окошка с предупреждением об отправке
+            }
+        });
+
+        EditDbButton = findViewById(R.id.info_edit_button);
+        EditDbButton.setOnClickListener(new View.OnClickListener() {
+            @Override
             public void onClick(View view) {
-                if(EditText.getText() != null && !Objects.equals(EditText.getText().toString().trim(), "")) {
-                    // открываем подключение
-                    db = databaseHelper.open();
-                    if(CheckBox_All.isChecked()) {
-                        //получаем данные из бд в виде курсора
-                        cursor = db.rawQuery("select * from " + DBHelper.TABLE, null);
-                        SQL_request(cursor, EditText.getText().toString());
-                        cursor.close();
-                    } else {
-                        for (int i = 0; i < group_list.size(); ++i) {
-                            if (group_list.get(i).isChecked()) {
-                                cursor = db.rawQuery("select * from " + DBHelper.TABLE + " where " + DBHelper.COLUMN_GROUP
-                                        + "=?", new String[]{group_list.get(i).getText().toString()});
-                                SQL_request(cursor, EditText.getText().toString());
-                                cursor.close();
-                            }
-                        }
-                    }
-                    db.close();
-                    EditText.getText().clear();
-                } else {
-                    Toast.makeText(context, context.getString(R.string.empty_text), Toast.LENGTH_SHORT).show();
-                }
+                startEditDbActivity();
             }
         });
     }
 
-    private void SQL_request(Cursor cursor, String str){
+    /*private void SQL_request(Cursor cursor, String str){
         ArrayList<Integer> _ids = new ArrayList<>();
         if (cursor.moveToFirst()) {
             //System.out.println("ONE ROW");
             int idIndex = cursor.getColumnIndex(DBHelper.COLUMN_ID);
-                        /*System.out.println(idIndex);
-                        System.out.println(cursor.getInt(idIndex));*/
+                        *//*System.out.println(idIndex);
+                        System.out.println(cursor.getInt(idIndex));*//*
             do{
                 //System.out.println(cursor.getInt(idIndex));
                 _ids.add(cursor.getInt(idIndex));
@@ -111,29 +119,24 @@ public class InfoActivity extends AppCompatActivity {
                 .build();
         HttpGetRequestTask request = new HttpGetRequestTask(URL, null);
         request.execute(); //выолнение запроса в отдельном потоке
+    }*/
+
+    @Override
+    protected void onResume() {
+        super.onResume();
     }
 
-    private void db_init(){
-        databaseHelper = new DBHelper(this);
-        // инициализируем базу данных
-        //TODO: добавить возможность редактирования бд
-        db = databaseHelper.open();
-        group_str = new ArrayList<>();
-        cursor = db.rawQuery("select * from " + DBHelper.TABLE + " group by " + DBHelper.COLUMN_GROUP, null);
-        if (cursor.moveToFirst()) {
-            int idIndex = cursor.getColumnIndex(DBHelper.COLUMN_GROUP);
-            do{
-                group_str.add(cursor.getString(idIndex));
-
-            } while (cursor.moveToNext());
+    @Override
+    protected void onStop() {
+        super.onStop();
+        if (mDisposable != null && !mDisposable.isDisposed()) {
+            mDisposable.dispose();
         }
-        cursor.close();
-        db.close();
     }
 
     private void CheckBoxCreate(){
         CheckBox_All = findViewById(R.id.checkBoxAll);
-        CheckBox_All.setText(DBHelper.TABLE);
+        CheckBox_All.setText(User.TABLE);
 
         //layout params for every CheckBox
         ConstraintLayout.LayoutParams AllCheckBoxParams = (android.support.constraint.ConstraintLayout.LayoutParams)
@@ -179,5 +182,9 @@ public class InfoActivity extends AppCompatActivity {
                 }
             }
         });
+    }
+
+    private void startEditDbActivity(){
+        startActivity(new Intent(this, EditDbActivity.class));
     }
 }

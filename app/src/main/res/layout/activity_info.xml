@@ -2,11 +2,11 @@
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/info_container"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:id="@+id/info_container"
-    tools:context="com.pavel.a692group.InfoActivity"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    tools:context="com.pavel.a692group.InfoActivity">
 
 
     <Button
@@ -40,7 +40,7 @@
         android:orientation="vertical"
         app:layout_constraintGuide_end="383dp" />
 
-<!--    <CheckBox
+    <!--    <CheckBox
         android:id="@+id/checkBox1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -56,13 +56,24 @@
         android:id="@+id/checkBoxAll"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="116dp"
         android:layout_marginStart="244dp"
         android:layout_marginTop="8dp"
+        android:layout_marginBottom="116dp"
         android:text="CheckBox"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="1.0" />
+
+    <Button
+        android:id="@+id/info_edit_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:layout_marginLeft="32dp"
+        android:layout_marginBottom="124dp"
+        android:text="@string/info_edit_button"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
 </android.support.constraint.ConstraintLayout>
