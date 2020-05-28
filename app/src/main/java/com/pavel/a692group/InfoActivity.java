@@ -2,9 +2,9 @@ package com.pavel.a692group;
 
 import android.content.Context;
 import android.content.Intent;
-import android.support.constraint.ConstraintLayout;
-import android.support.v7.app.ActionBar;
-import android.support.v7.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -139,7 +139,7 @@ public class InfoActivity extends AppCompatActivity {
         CheckBox_All.setText(User.TABLE);
 
         //layout params for every CheckBox
-        ConstraintLayout.LayoutParams AllCheckBoxParams = (android.support.constraint.ConstraintLayout.LayoutParams)
+        ConstraintLayout.LayoutParams AllCheckBoxParams = (androidx.constraintlayout.widget.ConstraintLayout.LayoutParams)
                 CheckBox_All.getLayoutParams();
 
         if(!group_str.isEmpty()){ //открытие бд, получение списка групп и создание в активити чекбоксов с этими группами.
@@ -152,8 +152,8 @@ public class InfoActivity extends AppCompatActivity {
                 Box.setId(index + 10);
 
                 ConstraintLayout.LayoutParams Params = new ConstraintLayout.LayoutParams(
-                        android.support.constraint.ConstraintLayout.LayoutParams.WRAP_CONTENT,
-                        android.support.constraint.ConstraintLayout.LayoutParams.WRAP_CONTENT);
+                        androidx.constraintlayout.widget.ConstraintLayout.LayoutParams.WRAP_CONTENT,
+                        androidx.constraintlayout.widget.ConstraintLayout.LayoutParams.WRAP_CONTENT);
                 Params.leftMargin = AllCheckBoxParams.leftMargin;
                 Params.topMargin = AllCheckBoxParams.topMargin;
                 Params.startToStart = AllCheckBoxParams.startToStart;
