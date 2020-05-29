@@ -1,4 +1,4 @@
-package com.pavel.a692group
+package com.pavel.a692group.presentation.message
 
 import android.content.Intent
 import android.os.Bundle
@@ -7,10 +7,12 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.observe
+import com.pavel.a692group.R
 import com.pavel.a692group.databinding.ActivityInfoBinding
+import com.pavel.a692group.presentation.login.AuthActivity
 import com.pavel.a692group.presentation.login.LoginViewModel
-import com.pavel.a692group.presentation.message.MessageViewModel
-import com.pavel.a692group.room.entity.User
+import com.pavel.a692group.presentation.users.EditDbActivity
+import com.pavel.a692group.data.entity.User
 import kotlinx.android.synthetic.main.activity_info.*
 import org.koin.android.viewmodel.ext.android.viewModel
 import java.util.*
@@ -36,7 +38,9 @@ class InfoActivity: AppCompatActivity() {
         }
 
         super.onCreate(savedInstanceState)
-        binding = DataBindingUtil.setContentView(this, R.layout.activity_info)
+        binding = DataBindingUtil.setContentView(this,
+            R.layout.activity_info
+        )
         binding.lifecycleOwner = this
         binding.messageViewModel = messageViewModel
         binding.loginViewModel = loginViewModel

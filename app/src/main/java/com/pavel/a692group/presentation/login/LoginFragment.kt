@@ -1,4 +1,4 @@
-package com.pavel.a692group
+package com.pavel.a692group.presentation.login
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -7,8 +7,8 @@ import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.observe
+import com.pavel.a692group.R
 import com.pavel.a692group.databinding.ActivityLoginBinding
-import com.pavel.a692group.presentation.login.LoginViewModel
 import org.koin.android.viewmodel.ext.android.viewModel
 
 /**
@@ -24,7 +24,8 @@ class LoginFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        binding = DataBindingUtil.inflate<ActivityLoginBinding>(inflater, R.layout.activity_login, container, false)
+        binding = DataBindingUtil.inflate<ActivityLoginBinding>(inflater,
+            R.layout.activity_login, container, false)
             .apply {
             lifecycleOwner = viewLifecycleOwner
             viewmodel = loginViewModel

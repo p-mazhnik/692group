@@ -11,7 +11,7 @@ import com.pavel.a692group.presentation.login.LoginViewModel
 import com.pavel.a692group.presentation.message.MessageViewModel
 import com.pavel.a692group.presentation.users.UserDetailViewModel
 import com.pavel.a692group.presentation.users.UsersViewModel
-import com.pavel.a692group.room.dao.UserDao
+import com.pavel.a692group.data.datasource.room.UserDao
 import org.koin.android.ext.koin.androidApplication
 import org.koin.android.viewmodel.dsl.viewModel
 import org.koin.dsl.module

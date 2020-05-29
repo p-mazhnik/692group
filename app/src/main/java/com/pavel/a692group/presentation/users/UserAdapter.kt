@@ -1,4 +1,4 @@
-package com.pavel.a692group
+package com.pavel.a692group.presentation.users
 
 import android.util.Log
 import android.view.LayoutInflater
@@ -8,9 +8,7 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.pavel.a692group.databinding.UserItemBinding
-import com.pavel.a692group.presentation.users.UsersViewModel
-import com.pavel.a692group.room.entity.User
-import org.koin.core.KoinComponent
+import com.pavel.a692group.data.entity.User
 
 /**
  * Created by Pavel Mazhnik on 03.03.19.
@@ -18,14 +16,19 @@ import org.koin.core.KoinComponent
  * адаптер для отображния списка пользователей в RecyclerView в EditDbActivity
  */
 class UserAdapter(private val viewLifecycleOwner: LifecycleOwner, private val vm: UsersViewModel) :
-    ListAdapter<User, UserAdapter.UserListHolder>(UserDiffCallback()) {
+    ListAdapter<User, UserAdapter.UserListHolder>(
+        UserDiffCallback()
+    ) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): UserListHolder {
         Log.d("UserAdapter", "onCreateViewHolder")
         val binding =
             UserItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         binding.lifecycleOwner = viewLifecycleOwner
-        return UserListHolder(vm, binding)
+        return UserListHolder(
+            vm,
+            binding
+        )
     }
 
     override fun onBindViewHolder(holder: UserListHolder, position: Int) {

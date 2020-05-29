@@ -1,10 +1,8 @@
 package com.pavel.a692group.presentation.users
 
-import android.util.Log
 import androidx.lifecycle.*
 import com.pavel.a692group.data.repository.UsersRepository
-import com.pavel.a692group.room.entity.User
-import kotlinx.coroutines.Dispatchers
+import com.pavel.a692group.data.entity.User
 import kotlinx.coroutines.launch
 
 class UserDetailViewModel(
@@ -25,7 +23,12 @@ class UserDetailViewModel(
 
     fun save(){
         viewModelScope.launch {
-            usersRepository.insert(User(inputId.value!!, inputName.value!!))
+            usersRepository.insert(
+                User(
+                    inputId.value!!,
+                    inputName.value!!
+                )
+            )
         }
     }
 

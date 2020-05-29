@@ -1,4 +1,4 @@
-package com.pavel.a692group.room.entity
+package com.pavel.a692group.data.entity
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity

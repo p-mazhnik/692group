@@ -6,7 +6,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModel
 import com.pavel.a692group.data.repository.UsersRepository
-import com.pavel.a692group.room.entity.User
+import com.pavel.a692group.data.entity.User
 import com.pavel.a692group.utils.Event
 
 class UsersViewModel(

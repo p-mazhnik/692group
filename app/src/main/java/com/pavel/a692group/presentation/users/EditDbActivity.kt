@@ -1,4 +1,4 @@
-package com.pavel.a692group
+package com.pavel.a692group.presentation.users
 
 import android.content.Intent
 import android.os.Bundle
@@ -8,8 +8,8 @@ import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.lifecycle.observe
+import com.pavel.a692group.R
 import com.pavel.a692group.databinding.ActivityEditDbBinding
-import com.pavel.a692group.presentation.users.UsersViewModel
 import org.koin.android.viewmodel.ext.android.viewModel
 
 /**
@@ -26,7 +26,9 @@ class EditDbActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = DataBindingUtil.setContentView(this, R.layout.activity_edit_db)
+        binding = DataBindingUtil.setContentView(this,
+            R.layout.activity_edit_db
+        )
         binding.usersViewModel = usersViewModel
         binding.lifecycleOwner = this
 
@@ -38,7 +40,10 @@ class EditDbActivity : AppCompatActivity() {
         /*
         Для того, чтобы мы могли заполнить наш GridView созданым объектом, надо задать адаптер.
         */
-        mUserAdapter = UserAdapter(this, usersViewModel)
+        mUserAdapter = UserAdapter(
+            this,
+            usersViewModel
+        )
         layoutManager = LinearLayoutManager(this)
 
         binding.usersList.adapter = mUserAdapter

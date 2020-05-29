@@ -1,15 +1,12 @@
-package com.pavel.a692group
+package com.pavel.a692group.presentation.users
 
-import android.app.Activity
 import android.os.Bundle
 import android.util.Log
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
+import com.pavel.a692group.R
 import com.pavel.a692group.databinding.ActivityEditUserBinding
 import org.koin.android.viewmodel.ext.android.viewModel
-import com.pavel.a692group.presentation.users.UserDetailViewModel
-import com.pavel.a692group.room.entity.User
 import org.koin.core.parameter.parametersOf
 
 /**
@@ -25,7 +22,9 @@ class EditUserActivity : AppCompatActivity() {
         Log.d("EditUserActivity", "EditUserActivity started with user_id: $mUserId")
         val detailViewModel: UserDetailViewModel by viewModel{ parametersOf(mUserId)}
 
-        binding = DataBindingUtil.setContentView(this, R.layout.activity_edit_user)
+        binding = DataBindingUtil.setContentView(this,
+            R.layout.activity_edit_user
+        )
         binding.detailViewModel = detailViewModel
         binding.lifecycleOwner = this
         detailViewModel.init()

@@ -13,7 +13,7 @@
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context="com.pavel.a692group.EditUserActivity">
+        tools:context="com.pavel.a692group.presentation.users.EditUserActivity">
 
         <TextView
             android:id="@+id/edit_id_text"

@@ -15,7 +15,7 @@
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
         <activity
-            android:name=".InfoActivity">
+            android:name=".presentation.message.InfoActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -23,13 +23,13 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".AuthActivity"
+            android:name=".presentation.login.AuthActivity"
             android:label="@string/title_activity_login"
             android:theme="@style/Theme.AppCompat.Translucent" />
         <activity
-            android:name=".EditDbActivity" />
+            android:name=".presentation.users.EditDbActivity" />
         <activity
-            android:name=".EditUserActivity">
+            android:name=".presentation.users.EditUserActivity">
         </activity>
     </application>
 

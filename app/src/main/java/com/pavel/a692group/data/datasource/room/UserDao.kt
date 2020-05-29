@@ -1,8 +1,8 @@
-package com.pavel.a692group.room.dao
+package com.pavel.a692group.data.datasource.room
 
 import androidx.lifecycle.LiveData
 import androidx.room.*
-import com.pavel.a692group.room.entity.User
+import com.pavel.a692group.data.entity.User
 
 /**
  * Created by Pavel Mazhnik on 02.03.19.

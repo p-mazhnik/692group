@@ -1,4 +1,4 @@
-package com.pavel.a692group
+package com.pavel.a692group.presentation.login
 
 import androidx.fragment.app.Fragment
 

@@ -12,7 +12,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context="com.pavel.a692group.EditDbActivity">
+        tools:context="com.pavel.a692group.presentation.users.EditDbActivity">
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/usersList"

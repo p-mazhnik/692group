@@ -2,8 +2,8 @@ package com.pavel.a692group.data.repository
 
 import android.util.Log
 import androidx.lifecycle.LiveData
-import com.pavel.a692group.room.dao.UserDao
-import com.pavel.a692group.room.entity.User
+import com.pavel.a692group.data.datasource.room.UserDao
+import com.pavel.a692group.data.entity.User
 
 class UsersRepository(
     private val userDao: UserDao

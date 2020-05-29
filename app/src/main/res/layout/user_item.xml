@@ -4,7 +4,7 @@
     <data>
         <variable
             name="user"
-            type="com.pavel.a692group.room.entity.User" />
+            type="com.pavel.a692group.data.entity.User" />
         <variable
             name="usersViewModel"
             type="com.pavel.a692group.presentation.users.UsersViewModel" />

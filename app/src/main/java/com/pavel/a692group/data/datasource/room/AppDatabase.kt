@@ -2,8 +2,7 @@ package com.pavel.a692group.data.datasource.room
 
 import androidx.room.Database
 import androidx.room.RoomDatabase
-import com.pavel.a692group.room.dao.UserDao
-import com.pavel.a692group.room.entity.User
+import com.pavel.a692group.data.entity.User
 
 /**
  * Created by Pavel Mazhnik on 02.03.19.
