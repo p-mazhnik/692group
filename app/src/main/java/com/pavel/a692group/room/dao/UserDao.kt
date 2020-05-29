@@ -11,20 +11,20 @@ import com.pavel.a692group.room.entity.User
 @Dao
 interface UserDao {
     @get:Query("SELECT * FROM " + User.TABLE)
-    val all: LiveData<List<User?>?>?
+    val all: LiveData<List<User>>
 
     @Query("SELECT * FROM " + User.TABLE + " WHERE " + User.COLUMN_ID + " = :id")
-    fun getById(id: Long): LiveData<List<User?>?>?
+    suspend fun getById(id: Long): User?
 
     @get:Query("SELECT DISTINCT " + User.COLUMN_GROUP + " FROM " + User.TABLE)
-    val allGroups: LiveData<List<String?>?>
+    val allGroups: LiveData<List<String>>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insert(user: User?)
+    suspend fun insert(user: User)
 
     /*@Update
     int update(User user);*/
     @Delete
-    suspend fun delete(user: User?)
+    suspend fun delete(user: User)
 }
 

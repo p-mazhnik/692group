@@ -9,6 +9,8 @@ import com.pavel.a692group.data.repository.AuthRepository
 import com.pavel.a692group.data.repository.UsersRepository
 import com.pavel.a692group.presentation.login.LoginViewModel
 import com.pavel.a692group.presentation.message.MessageViewModel
+import com.pavel.a692group.presentation.users.UserDetailViewModel
+import com.pavel.a692group.presentation.users.UsersViewModel
 import com.pavel.a692group.room.dao.UserDao
 import org.koin.android.ext.koin.androidApplication
 import org.koin.android.viewmodel.dsl.viewModel
@@ -25,6 +27,12 @@ val viewModels = module {
     }
     viewModel {
         MessageViewModel(app= androidApplication() as App, usersRepository = get())
+    }
+    viewModel {
+        UsersViewModel(get())
+    }
+    viewModel {
+        (id: Long) -> UserDetailViewModel(id, get())
     }
 }
 

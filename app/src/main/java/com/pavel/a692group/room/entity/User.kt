@@ -11,16 +11,22 @@ import java.io.Serializable
  * Description:
  */
 @Entity(tableName = User.TABLE)
-class User : Serializable {
+class User() : Serializable {
+    @Ignore
+    constructor(id: String, name: String) : this() {
+        this.setIdFromString(id)
+        this.name = name
+    }
+
     @PrimaryKey
     @ColumnInfo(name = COLUMN_ID)
-    var id = 0
+    var id: Long = 0
 
     @ColumnInfo(name = COLUMN_NAME)
     var name: String? = null
 
     @ColumnInfo(name = COLUMN_GROUP)
-    var group: String? = null
+    var group: String? = "new"
 
     val idToString: String
         get() = "" + id
@@ -28,7 +34,7 @@ class User : Serializable {
     fun setIdFromString(str: String) {
         id = -1
         try {
-            id = str.toInt()
+            id = str.toLong()
         } catch (nfe: NumberFormatException) {
             println("Could not parse $nfe")
         }
@@ -38,6 +44,16 @@ class User : Serializable {
         id = user.id
         name = user.name
         group = user.group
+    }
+
+    @Ignore
+    override fun equals(other: Any?): Boolean {
+        return super.equals(other)
+    }
+
+    @Ignore
+    override fun toString(): String {
+        return "$id $name"
     }
 
     companion object {
@@ -64,3 +80,4 @@ class User : Serializable {
         const val COLUMN_GROUP = "_group"
     }
 }
+
