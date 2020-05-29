@@ -35,4 +35,6 @@
 
     <string name="nonexistent_user_id">id is not found</string>
     <string name="group_new_user">new_user</string>
+    <string name="username">Username</string>
+    <string name="password">Password</string>
 </resources>

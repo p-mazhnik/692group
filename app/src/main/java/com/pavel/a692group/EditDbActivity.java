@@ -12,16 +12,10 @@ import android.widget.Button;
 import android.widget.GridView;
 import android.widget.Toast;
 
-import com.pavel.a692group.room.AppDatabase;
+import com.pavel.a692group.data.datasource.room.AppDatabase;
 import com.pavel.a692group.room.entity.User;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
-
-import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.disposables.Disposable;
-import io.reactivex.functions.Consumer;
 
 /**
  * Created by p.mazhnik on 31.12.2017. 23:50
@@ -37,7 +31,6 @@ public class EditDbActivity extends AppCompatActivity {
     private Intent mIntent;
 
     private AppDatabase mDatabase;
-    private Disposable mDisposable;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,8 +47,6 @@ public class EditDbActivity extends AppCompatActivity {
         mGridView.setHorizontalSpacing(20);
         mNewButton = (FloatingActionButton) findViewById(R.id.edit_db_floatingActionButton);
         mButton = findViewById(R.id.edit_db_button);
-
-        mDatabase = AppDatabase.createPersistentDatabase(this);
 
         /*
         Для того, чтобы мы могли заполнить наш GridView созданым объектом, надо задать адаптер.
@@ -88,8 +79,7 @@ public class EditDbActivity extends AppCompatActivity {
     }
 
     private void readFromDb(){
-        mDisposable = mDatabase
-                .getUserDao()
+        /*mDisposable = mDatabase.userDao
                 .getAll()
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Consumer<List<User>>() {
@@ -109,7 +99,7 @@ public class EditDbActivity extends AppCompatActivity {
                     public void accept(Throwable throwable) throws Exception {
                         Log.e("Inf", "accept: ", throwable);
                     }
-                });
+                });*/
     }
 
     private void startEditUserActivity(long id, int position){
@@ -124,15 +114,6 @@ public class EditDbActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == 1 && resultCode == RESULT_OK) {
             readFromDb();
-        }
-    }
-
-    @Override
-    protected void onDestroy() {
-        // Toast.makeText(this, "Call EditDb.onDestroy" + mDisposable.isDisposed(), Toast.LENGTH_LONG).show();
-        super.onDestroy();
-        if (mDisposable != null && !mDisposable.isDisposed()) {
-            mDisposable.dispose();
         }
     }
 }

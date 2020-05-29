@@ -2,8 +2,7 @@ package com.pavel.a692group;
 
 import android.content.Intent;
 import android.os.Handler;
-import android.os.Looper;
-import android.os.Message;
+
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
@@ -13,14 +12,10 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.pavel.a692group.room.AppDatabase;
+import com.pavel.a692group.data.datasource.room.AppDatabase;
 import com.pavel.a692group.room.entity.User;
 
 import java.util.List;
-
-import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.disposables.Disposable;
-import io.reactivex.functions.Consumer;
 
 /**
  * Created by p.mazhnik on 01.01.2018.
@@ -42,7 +37,6 @@ public class EditUserActivity extends AppCompatActivity {
     private Intent mIntentAnswer;
 
     private AppDatabase mDatabase;
-    private Disposable mDisposable;
     long taskCount;
 
     @Override
@@ -58,7 +52,6 @@ public class EditUserActivity extends AppCompatActivity {
         mIdTextEdit = findViewById(R.id.edit_id);
         mNameTextEdit = findViewById(R.id.edit_name);
 
-        mDatabase = AppDatabase.createPersistentDatabase(this);
         Intent intent = getIntent();
         mUserId = intent.getExtras().getLong(ID_KEY);
 
@@ -75,19 +68,18 @@ public class EditUserActivity extends AppCompatActivity {
     }
 
     private void getUserFromDb(){
-        mDisposable = mDatabase
-                .getUserDao()
+        /*mDisposable = mDatabase.userDao
                 .getById(mUserId)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Consumer<List<User>>() {
                     @Override
                     public void accept(List<User> users) throws Exception {
-                        /*
+                        *//*
                         Если запись есть в базе, то она придет в accept сразу же после подписки.
                         И при каждом последующем обновлении этой записи в базе данных, она также будет приходить в accept.
                         Если записи нет, то сразу после подписки ничего не придет. А вот если она позже появится, то она придет в accept.
                         В данном случае запись придет всегда, но лист может быть пустым.
-                         */
+                         *//*
                         setEditText(users);
                     }
                 }, new Consumer<Throwable>() {
@@ -95,7 +87,7 @@ public class EditUserActivity extends AppCompatActivity {
                     public void accept(Throwable throwable) throws Exception {
                         Log.e("Inf", "accept: ", throwable);
                     }
-                });
+                });*/
     }
 
     private void setEditText(List<User> users){
@@ -136,13 +128,13 @@ public class EditUserActivity extends AppCompatActivity {
     }
 
     private void db_insert(final User user){
-        Thread t = new Thread(new Runnable() {
+        /*Thread t = new Thread(new Runnable() {
             @Override
             public void run() {
-                mDatabase.getUserDao().insert(user);
+                mDatabase.userDao.insert(user);
             }
         });
-        t.start();
+        t.start();*/
     }
 
     private boolean isNewUser(){
@@ -152,13 +144,5 @@ public class EditUserActivity extends AppCompatActivity {
     private void wrongFinish(){
         Toast.makeText(this, getString(R.string.nonexistent_user_id), Toast.LENGTH_LONG).show();
         finish();
-    }
-
-    @Override
-    protected void onStop() {
-        super.onStop();
-        if (mDisposable != null && !mDisposable.isDisposed()) {
-            mDisposable.dispose();
-        }
     }
 }
