@@ -1,8 +1,6 @@
-package com.pavel.a692group;
+package com.pavel.a692group.data.datasource.remote;
 
 import android.content.Context;
-
-import com.pavel.a692group.request.http.RequestUrlCreator;
 
 import java.util.ArrayList;
 

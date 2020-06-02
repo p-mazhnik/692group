@@ -1,4 +1,4 @@
-package com.pavel.a692group.request.http;
+package com.pavel.a692group.data.datasource.remote;
 
 import android.content.Context;
 import com.pavel.a692group.R;
